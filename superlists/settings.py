@@ -23,11 +23,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'g2x5^l6tv_0!$u07n7v5-k3pg)0&6%72*5y&^wa-96kfb+3*^@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+# DEBUG = False
 
-TEMPLATE_DEBUG = False
+# TEMPLATE_DEBUG = False
 
-ALLOWED_HOSTS = ['staging.aldazar-superlists.ddns.net']
+# ALLOWED_HOSTS = ['staging.aldazar-superlists.ddns.net']
+
+DEBUG = True
+
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -80,7 +84,7 @@ WSGI_APPLICATION = 'superlists.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': 'db.sqlite3',
     }
 }
 
