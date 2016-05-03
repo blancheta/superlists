@@ -27,7 +27,7 @@ DEBUG = False
 
 TEMPLATE_DEBUG = False
 
-ALLOWED_HOSTS = ['aldazar-superlists.ddns.net']
+ALLOWED_HOSTS = ['staging.aldazar-superlists.ddns.net']
 
 
 # Application definition
