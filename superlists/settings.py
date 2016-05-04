@@ -23,15 +23,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'g2x5^l6tv_0!$u07n7v5-k3pg)0&6%72*5y&^wa-96kfb+3*^@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = False
+DEBUG = False
 
-# TEMPLATE_DEBUG = False
+TEMPLATE_DEBUG = False
 
-# ALLOWED_HOSTS = ['staging.aldazar-superlists.ddns.net']
-
-DEBUG = True
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['staging.aldazar-superlists.ddns.net']
 
 
 # Application definition
@@ -87,7 +83,6 @@ DATABASES = {
         'NAME': '../database/db.sqlite3',
     }
 }
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
