@@ -1,0 +1,19 @@
+upstream superlists{
+	server unix:///sockets/aldazar-superlists.ddns.net.sock;
+}
+
+server{
+	listen 80;
+	server_name staging.aldazar-superlists.ddns.net;
+	root        /home/aldazar/sites/staging.aldazar-superlists/source/;
+
+	location /static/ {
+		alias /home/aldazar/sites/staging.aldazar-superlists/static/;
+	}
+
+	location / {
+		uwsgi_pass	superlists;
+		include		/etc/nginx/uwsgi_params;
+	}
+
+}	
