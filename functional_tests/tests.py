@@ -1,13 +1,14 @@
-from django.test import LiveServerTestCase
+
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import unittest
+from unittest import skip
 import sys
 
 # Static files testing
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 
-class NewVisitorTest(StaticLiveServerTestCase):
+class FunctionalTest(StaticLiveServerTestCase):
 
 	@classmethod
 	def setUpClass(cls):
@@ -23,17 +24,47 @@ class NewVisitorTest(StaticLiveServerTestCase):
 		if cls.server_url == cls.live_server_url:
 			super().tearDownClass()
 
-	def setUp(self):
+	@classmethod
+	def setUp(cls):
 		self.browser = webdriver.Firefox()
 		self.browser.implicitly_wait(8)
 
-	def tearDown(self):
+	@classmethod
+	def tearDown(cls):
 		self.browser.quit()
 
 	def check_for_row_in_list_table(self,row_text):
 		table = self.browser.find_element_by_id('id_list_tab')
 		rows = table.find_elements_by_tag_name('tr')
 		self.assertIn(row_text,[row.text for row in rows])
+
+class NewVisitorTest(FunctionalTest):
+
+	# @classmethod
+	# def setUpClass(cls):
+	# 	for arg in sys.argv:
+	# 		if 'liveserver' in arg:
+	# 			cls.server_url = 'http://' + arg.split('=')[1]
+	# 			return
+	# 	super().setUpClass()
+	# 	cls.server_url = cls.live_server_url
+
+	# @classmethod
+	# def tearDownClass(cls):
+	# 	if cls.server_url == cls.live_server_url:
+	# 		super().tearDownClass()
+
+	# def setUp(self):
+	# 	self.browser = webdriver.Firefox()
+	# 	self.browser.implicitly_wait(8)
+
+	# def tearDown(self):
+	# 	self.browser.quit()
+
+	# def check_for_row_in_list_table(self,row_text):
+	# 	table = self.browser.find_element_by_id('id_list_tab')
+	# 	rows = table.find_elements_by_tag_name('tr')
+	# 	self.assertIn(row_text,[row.text for row in rows])
 
 	def test_can_start_a_list_and_retrieve_it_later(self):
 
@@ -106,6 +137,9 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
 		# Satisfied, she goes back to sleep
 
+
+class LayoutAndStylingTest(FunctionalTest):
+
 	def test_layout_and_styling(self):
 
 		# Edith goes to the home page
@@ -125,6 +159,29 @@ class NewVisitorTest(StaticLiveServerTestCase):
 		self.assertAlmostEqual(
 			inputbox.location['x'] + inputbox.size['width'] / 2, 370.5, delta=5
 		)
+
+
+class ItemValidationTest(FunctionalTest):
+
+	@skip
+	def test_cannot_add_empty_list_items(self):
+
+		# Edith goes to the home page amd accidentally tries to submit
+
+		# an empty list item. She hits Enter on the empty input box.
+
+		# The home page refreshes, and there is an error message saying
+
+		# those list items cannot be blank
+
+		# She tries again with some test for the item, which now works
+
+		# Perversly she now decides to submit a second blank list item
+
+		# She receives a similar warning on the list page
+
+		# And she can correct it by filling some text in
+		self.fail('write me!')
 
 # if __name__ == '__main__':
 # 	unittest.main(warnings='ignore')
