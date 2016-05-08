@@ -45,6 +45,33 @@ class ListViewTest(TestCase):
 		self.assertNotContains(response, 'other listitem 1')
 		self.assertNotContains(response, 'other listitem 2')
 
+	def test_can_save_a_POST_request_to_an_existing_list(self):
+
+		other_list = List.objects.create()
+		correct_list = List.objects.create()
+
+		self.client.post(
+			'/todolists/%d/' % (correct_list.id,),
+			data={'item_text': 'A new item for an existing list'}
+			)
+
+		self.assertEqual(Item.objects.count(), 1)
+		new_item = Item.objects.first()
+		self.assertEqual(new_item.text, 'A new item for an existing list')
+		self.assertEqual(new_item.list, correct_list)
+
+	def test_redirects_to_list_view(self):
+
+		other_list = List.objects.create()
+		correct_list = List.objects.create()
+
+		response = self.client.post(
+			'/todolists/%d/' % (correct_list.id,),
+			data={'item_text': 'A new item for an existing list'}
+		)
+
+		self.assertRedirects(response, '/todolists/%d/' % (correct_list.id))
+
 
 class NewListTest(TestCase):
 
@@ -70,33 +97,6 @@ class NewListTest(TestCase):
 
 		self.assertRedirects(response, '/todolists/%d/' % (new_list.id,))
 
-	def test_can_save_a_POST_request_to_an_existing_list(self):
-
-		other_list = List.objects.create()
-		correct_list = List.objects.create()
-
-		self.client.post(
-			'/todolists/%d/add_item' % (correct_list.id,),
-			data={'item_text': 'A new item for an existing list'}
-			)
-
-		self.assertEqual(Item.objects.count(), 1)
-		new_item = Item.objects.first()
-		self.assertEqual(new_item.text, 'A new item for an existing list')
-		self.assertEqual(new_item.list, correct_list)
-
-	def test_redirects_to_list_view(self):
-
-		other_list = List.objects.create()
-		correct_list = List.objects.create()
-
-		response = self.client.post(
-			'/todolists/%d/add_item' % (correct_list.id,),
-			data={'item_text': 'A new item for an existing list'}
-		)
-
-		self.assertRedirects(response, '/todolists/%d/' % (correct_list.id))
-
 	def test_passes_correct_list_to_template(self):
 		other_list = List.objects.create()
 		correct_list = List.objects.create()
@@ -110,7 +110,6 @@ class NewListTest(TestCase):
 			self.assertEqual(response.status_code, 200)
 			self.assertTemplateUsed(response, 'home.html')
 			expected_error = escape("You can't have an empty list item")
-			print(expected_error)
 			self.assertContains(response, expected_error)
 
 	def test_invalid_list_items_arent_saved(self):
