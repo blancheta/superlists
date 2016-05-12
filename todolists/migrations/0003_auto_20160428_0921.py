@@ -17,9 +17,4 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(serialize=False, auto_created=True, verbose_name='ID', primary_key=True)),
             ],
         ),
-        migrations.AddField(
-            model_name='item',
-            name='list',
-            field=models.ForeignKey(default=None, to='todolists.List'),
-        ),
     ]
