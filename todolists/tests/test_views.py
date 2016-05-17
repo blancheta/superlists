@@ -1,4 +1,4 @@
-from todolists.forms import ItemForm, EMPTY_ITEM_ERROR
+from todolists.forms import ItemForm, ExistingListItemForm, EMPTY_ITEM_ERROR, DUPLICATE_ITEM_ERROR
 from django.utils.html import escape
 from django.template.loader import render_to_string
 from django.core.urlresolvers import resolve
@@ -6,7 +6,6 @@ from django.test import TestCase
 from todolists.views import home_page
 from django.http import HttpRequest
 from todolists.models import Item, List
-from todolists.forms import ItemForm
 from unittest import skip
 
 class HomePageTest(TestCase):
@@ -77,13 +76,12 @@ class ListViewTest(TestCase):
 
 	def test_for_invalid_input_passes_form_to_template(self):
 		response = self.post_invalid_input()
-		self.assertIsInstance(response.context['form'], ItemForm)
+		self.assertIsInstance(response.context['form'], ExistingListItemForm)
 
 	def test_for_invalid_input_shows_error_on_page(self):
 		response = self.post_invalid_input()
 		self.assertContains(response, escape(EMPTY_ITEM_ERROR))
 
-	@skip
 	def test_duplicate_item_validation_errors_end_up_on_lists_page(self):
 		list1 = List.objects.create()
 		item1 = Item.objects.create(list=list1,text='textey')
@@ -92,7 +90,7 @@ class ListViewTest(TestCase):
 			'/todolists/%d/' % (list1.id,),
 			data={'text': 'textey'}
 		)
-		expected_error = escape("You've already got this in your list")
+		expected_error = escape(DUPLICATE_ITEM_ERROR)
 		self.assertContains(response, expected_error)
 		self.assertTemplateUsed(response, 'list.html')
 		self.assertEqual(Item.objects.all().count(), 1)
@@ -112,7 +110,7 @@ class ListViewTest(TestCase):
 	def test_displays_item_form(self):
 		list_ = List.objects.create()
 		response = self.client.get('/todolists/%d/' % (list_.id,))
-		self.assertIsInstance(response.context['form'],ItemForm)
+		self.assertIsInstance(response.context['form'], ExistingListItemForm)
 		self.assertContains(response, 'name="text"')
 
 
