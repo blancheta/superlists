@@ -40,6 +40,12 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'todolists',
+    'accounts',
+)
+
+AUTH_USER_MODEL = 'accounts.ListUser'
+AUTHENTIFICATION_BACKENDS = (
+    'accounts.authentification.PersonaAuthentificationBackend',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -52,6 +58,23 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
 )
+
+LOGGING = {
+    'version' : 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console' : {
+            'level' : 'DEBUG',
+            'class' : 'logging.StreamHandler',
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+        }
+    },
+    'root': {'level': ['INFO']},
+}
 
 ROOT_URLCONF = 'superlists.urls'
 
