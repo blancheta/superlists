@@ -34,7 +34,7 @@ class LoginTest(FunctionalTest):
 		self.browser.find_element_by_tag_name('button').click()
 
 		# The Persona window closes
-		self.switch_to_new_window('To-Do')
+		self.switch_to_new_window('To-Do list')
 
 		# She can see that she is logged in
 		self.wait_for_element_with_id('logout')
