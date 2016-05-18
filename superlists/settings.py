@@ -73,7 +73,7 @@ LOGGING = {
             'handlers': ['console'],
         }
     },
-    'root': {'level': ['INFO']},
+    'root': {'level': 'INFO'},
 }
 
 ROOT_URLCONF = 'superlists.urls'

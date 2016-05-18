@@ -1,6 +1,6 @@
 import requests
 import sys
-from account.models import ListUser
+from accounts.models import ListUser
 
 
 class PersonaAuthentificationBackend(object):
@@ -25,3 +25,6 @@ class PersonaAuthentificationBackend(object):
 					return self.get_user(email)
 				except ListUser.DoesNotExist:
 					return ListUser.objects.create(email=email)
+
+	def get_user(self, email):
+		return ListUser.objects.get(email=email)
