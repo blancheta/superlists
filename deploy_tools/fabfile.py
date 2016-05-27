@@ -13,6 +13,7 @@ def deploy():
 	_update_virtualenv(source_folder)
 	_update_static_files(source_folder)
 	_update_database(source_folder)
+	_change_source_owner(site_folder)
 
 
 def _create_directory_structure_if_necessary(site_folder):
@@ -33,12 +34,7 @@ def _get_latest_source(source_folder):
 def _update_settings(source_folder, site_name):
 	settings_path = source_folder + '/superlists/settings.py'
 	sed(settings_path, "DEBUG = True", "DEBUG = False")
-
-	sed(
-		settings_path,
-		'ALLOWED_HOSTS =.+$',
-		'ALLOWED_HOSTS = ["%s"]' % (site_name,)
-	)
+	sed(settings_path, 'DOMAIN = "localhost"', 'DOMAIN = "%s"' % (site_name))
 
 	secret_key_file = source_folder + '/superlists/secret_key.py'
 
@@ -55,9 +51,16 @@ def _update_virtualenv(source_folder):
 		run('virtualenv --python=python3.4 %s' % ( virtualenv_folder))
 		run('%s/bin/pip install -r %s/requirements.txt' % (virtualenv_folder, source_folder))
 
+
 def _update_static_files(source_folder):
 	run('cd %s && ../virtualenv/bin/python3 manage.py collectstatic --noinput' % (source_folder,))
+
 
 def _update_database(source_folder):
 	run('cd %s && ../virtualenv/bin/python3 manage.py migrate --noinput' % (source_folder))
 
+
+def _change_source_owner(site_folder):
+	run('cd %s && sudo chown -R www-data:www-data source' % (site_folder))
+	run('cd %s && sudo chown -R www-data:www-data database' % (site_folder))
+	run('cd %s && sudo chmod 644 database/db.sqlite3')
