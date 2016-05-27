@@ -1,8 +1,9 @@
 from django.contrib.auth import get_user_model
 from unittest.mock import patch
 from django.test import TestCase
+from superlists.settings import DOMAIN
 from accounts.authentication import (
-	PERSONA_VERIFY_URL, DOMAIN,
+	PERSONA_VERIFY_URL,
 	PersonaAuthenticationBackend
 )
 User = get_user_model()
