@@ -1,7 +1,8 @@
 from .base import FunctionalTest
-from selenium.webdriver.support.ui import WebDriverWait
 import time
 from unittest import skip
+
+TEST_EMAIL = 'edith@mockmyid.com'
 
 
 class LoginTest(FunctionalTest):
@@ -29,20 +30,26 @@ class LoginTest(FunctionalTest):
 
 		# Edith logs in with her email address
 		## Use mockmyid.com for test email
-		self.browser.find_element_by_id('authentication_email').send_keys('edith@mockmyid.com')
+		self.browser.find_element_by_id('authentication_email').send_keys(TEST_EMAIL)
 
 		self.browser.find_element_by_tag_name('button').click()
 
 		# The Persona window closes
 		self.switch_to_new_window('To-Do list')
 
+
 		# She can see that she is logged in
-		# self.wait_for_element_with_id('id_logout')
+		self.wait_to_be_logged_in(TEST_EMAIL)
 
-		# navbar = self.browser.find_element_by_css_selector('.navbar')
-		# self.assertIn('edith@mockmyid.com', navbar.text)
+		# Refreshing the page, shee sees it's a real session login
+		# not just a one-off for that page
+		self.browser.refresh()
+		self.wait_to_be_logged_in(TEST_EMAIL)
 
-	def wait_for_element_with_id(self, element_id):
-		WebDriverWait(self.browser, timeout=30).until(
-			lambda b: b.find_element_by_id(element_id)
-		)
+		# Terrified of this new feature, she reflexively clocks "logout"
+		self.browser.find_element_by_id('id_logout').click()
+		self.wait_to_be_logged_out(TEST_EMAIL)
+
+		# The "logged out" status also persists after a refresh
+		self.browser.refresh()
+		self.wait_to_be_logged_out(TEST_EMAIL)
