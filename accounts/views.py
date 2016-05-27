@@ -5,8 +5,9 @@ from django.http import HttpResponse
 
 def persona_login(request):
 	user = authenticate(assertion=request.POST['assertion'])
-
+	print(user)
 	if user:
+		print("Connection as ",user.email)
 		login(request, user)
 
-	return HttpResponse("OK")
+	return HttpResponse('OK')

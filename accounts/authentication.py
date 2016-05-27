@@ -6,16 +6,16 @@ User = get_user_model()
 PERSONA_VERIFY_URL = 'https://verifier.login.persona.org/verify'
 DOMAIN = 'localhost'
 
-
 class PersonaAuthenticationBackend(object):
 
 	def authenticate(self, assertion):
 		# Send the assertion to Mozilla's verifier service.
-
+		print("Log in ....")
 		response = requests.post(
 			PERSONA_VERIFY_URL,
 			data={'assertion': assertion, 'audience': DOMAIN}
 		)
+
 		if response.ok and response.json()['status'] == 'okay':
 			email = response.json()['email']
 			try:

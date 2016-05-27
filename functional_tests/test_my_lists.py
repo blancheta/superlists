@@ -34,3 +34,4 @@ class MyListsTest(FunctionalTest):
 
 		self.browser.get(self.server_url)
 		self.wait_to_be_logged_in(email)
+

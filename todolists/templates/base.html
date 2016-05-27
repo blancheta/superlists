@@ -16,8 +16,8 @@
 			<nav class="navbar navbar-default" role="navigation">
 					<a class="navbar-brand" href="/" >Superlists</a>
 					{% if user.email %}
-						<a class="btn navbar-btn navbar-right" id="id_logout" href="#">Log out</a>
 						<span class="navbar-text navbar-right"> Logged in as {{ user.email }} </span>
+						<a class="btn navbar-btn navbar-right" id="id_logout" href="{% url 'logout' %}">Log out</a>
 					{% else %}
 						<a class="btn navbar-btn navbar-right" id="id_login" href="#">Sign In</a>
 					{% endif %}
@@ -58,6 +58,7 @@
 			$(document).ready(function(){
 
 				var user = "{{ user.email }}" || null;
+				console.log(user);
 				var token = "{{ csrf_token }}";
 				var urls = {
 					login: "{% url 'persona_login' %}",
