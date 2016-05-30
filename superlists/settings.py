@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'todolists',
     'accounts',
+    'functional_tests',
 )
 
 MIDDLEWARE_CLASSES = (
