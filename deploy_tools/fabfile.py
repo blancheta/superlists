@@ -63,4 +63,4 @@ def _update_database(source_folder):
 def _change_source_owner(site_folder):
 	run('cd %s && sudo chown -R www-data:www-data source' % (site_folder))
 	run('cd %s && sudo chown -R www-data:www-data database' % (site_folder))
-	run('cd %s && sudo chmod 644 database/db.sqlite3')
+	run('cd %s && sudo chmod 644 database/db.sqlite3'% (site_folder))

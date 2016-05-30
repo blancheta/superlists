@@ -26,7 +26,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-DOMAIN = 'localhost'
+DOMAIN = "localhost"
 
 ALLOWED_HOSTS = [DOMAIN]
 
