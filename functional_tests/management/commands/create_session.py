@@ -12,7 +12,7 @@ class Command(BaseCommand):
 		parser.add_argument('email')
 
 	def handle(self, *args, **options):
-		session_key = self.create_pre_authenticated_session(options['email'])
+		session_key = create_pre_authenticated_session(options['email'])
 		self.stdout.write(session_key)
 
 def create_pre_authenticated_session(email):

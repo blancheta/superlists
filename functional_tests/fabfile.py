@@ -6,19 +6,19 @@ def _get_base_folder(host):
 
 
 def _get_manage_dot_py(host):
-	return '{path}/virtualenv/bin/django-admin.py {path}/source/manage.py'.format(path=_get_base_folder(host))
+	return '{path}/virtualenv/bin/python {path}/source/manage.py'.format(path=_get_base_folder(host))
 
 
 def reset_database():
-
-	run('{manage_py} flush'.format(
-		manage_py=_get_manage_dot_py(env.host)
+	run('source {}/virtualenv/bin/activate'.format(_get_base_folder(env.host)))
+	run('cd {path}/source && {manage_py} flush'.format(path=_get_base_folder(env.host),manage_py=_get_manage_dot_py(env.host)
 	))
 
 
 def create_session_on_server(email):
-
-	session_key = run('{manage_py} create_session {email}'.format(
+	run('source {}/virtualenv/bin/activate'.format(_get_base_folder(env.host)))
+	session_key = run('cd {path}/source && {manage_py} create_session {email}'.format(
+		path = _get_base_folder(env.host),
 		manage_py = _get_manage_dot_py(env.host),
 		email=email,
 	))
