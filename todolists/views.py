@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from todolists.models import Item, List
+from todolists.models import List
 from todolists.forms import ItemForm, ExistingListItemForm
 
 
@@ -30,3 +30,7 @@ def new_list(request):
 		return redirect(list_)
 	else:
 		return render(request, 'home.html', {"form": form})
+
+
+def my_lists(request, email):
+	return render(request, 'my_lists.html')
