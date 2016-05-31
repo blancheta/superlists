@@ -2,6 +2,7 @@ import requests
 from django.contrib.auth import get_user_model
 from superlists.settings import DOMAIN
 import logging
+logger = logging.getLogger(__name__)
 User = get_user_model()
 
 
@@ -26,6 +27,8 @@ class PersonaAuthenticationBackend(object):
 				return User.objects.get(email=email)
 			except:
 				return User.objects.create(email=email)
+		else:
+			logger.warning('Persona says no. Json was: {}'.format(response.json()))
 
 	def get_user(self, email):
 		try:

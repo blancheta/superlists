@@ -3,10 +3,13 @@ from django.utils.html import escape
 from django.template.loader import render_to_string
 from django.core.urlresolvers import resolve
 from django.test import TestCase
-from todolists.views import home_page
+from todolists.views import home_page, new_list
 from django.http import HttpRequest
 from todolists.models import Item, List
 from unittest import skip
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
 
 class HomePageTest(TestCase):
 
@@ -164,4 +167,22 @@ class NewListTest(TestCase):
 		self.assertEqual(List.objects.count(),0)
 		self.assertEqual(Item.objects.count(),0)
 
+	def test_list_owner_is_saved_if_user_is_authenticated(self):
+		request = HttpRequest()
+		request.user = User.objects.create(email='a@b.com')
+		request.POST['text'] = 'new list item'
+		new_list(request)
+		list_ = List.objects.first()
+		self.assertEqual(list_.owner, request.user)
 
+class MyListTest(TestCase):
+
+	def test_my_lists_url_renders_my_lists_template(self):
+		User.objects.create(email='a@b.com')
+		response = self.client.get('/todolists/users/a@b.com/')
+		self.assertTemplateUsed(response, 'my_lists.html')
+
+	def test_passes_correct_owner_to_template(self):
+		correct_user = User.objects.create(email='a@b.com')
+		response = self.client.get('/todolists/users/a@b.com/')
+		self.assertEqual(response.context['owner'], correct_user)
