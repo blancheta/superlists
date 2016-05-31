@@ -1,6 +1,9 @@
 from django.test import TestCase
 from todolists.models import Item, List
 from django.core.exceptions import ValidationError
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
 
 class ItemModelTest(TestCase):
 
@@ -60,5 +63,12 @@ class ListAndItemModelTest(TestCase):
 			[item1, item2, item3]
 		)
 
+class ListModelTest(TestCase):
 
+	def test_get_absolute_url(self):
+		pass
 
+	def test_lists_can_have_owners(self):
+		user = User.objects.create(email='a@b.com')
+		list_ = List.objects.create(owner=user)
+		self.assertIn(list_, user.list_set.all())
