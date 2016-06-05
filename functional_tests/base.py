@@ -1,4 +1,4 @@
-from os
+import os
 from datetime import datetime
 SCREEN_DUMP_LOCATION = os.path.join(
 	os.path.dirname(os.path.abspath(__file__)),
